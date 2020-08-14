@@ -42,6 +42,7 @@ describe(' All directors - getAllDirectors', () => {
   });
 });
 
+
 /*
  * 2. howManyMovies
  */
