@@ -2985,10 +2985,10 @@ function getAllDirectors(moviesArr) {
 
 function gettingUniqueDirectors(moviesArr) {
 let listOfDirectors = moviesArr.map(movie => movie.director)
-console.log('listOfDirectors',listOfDirectors)
+// console.log('listOfDirectors',listOfDirectors)
 let uniqueDirectors = listOfDirectors.filter((item,index) => listOfDirectors.indexOf(item) === index).sort();
 
-console.log('uniqueDirectors',uniqueDirectors)
+// console.log('uniqueDirectors',uniqueDirectors)
 
 }
 
@@ -3143,7 +3143,7 @@ function orderAlphabetically(moviesArr) {
 
     // console.log('AlphabeticallySorted',sortedArr.slice(0,20))
     let titleArr = sortedArr.map(movie => movie.title)
-    console.log('titleArr',titleArr.slice(0,20))
+    // console.log('titleArr',titleArr.slice(0,20))
     return titleArr.slice(0,20)
 }
 
@@ -3153,3 +3153,49 @@ orderAlphabetically(themovies)
 
 
 // BONUS - Iteration 8: Best yearly rate average - Best yearly rate average
+
+
+function bestYearAvg (moviesArr) {
+
+    if (!moviesArr.length) return null;
+    let years = moviesArr.map(movie => movie.year)
+    console.log('years',years)
+
+    let uniqueYears = years.filter((item,index) => years.indexOf(item) === index).sort();
+    console.log('uniqueYears',uniqueYears)
+
+    //Summe der Ratings / die Length der Ratings
+
+    let RatingsArr = []
+
+    uniqueYears.forEach (year => {
+        let newYearArr = moviesArr.filter(movie => movie.year === year)
+        console.log('newYearArr',newYearArr)
+        let sumRating = newYearArr.reduce((accumulator, currentValue) => { 
+            if(!currentValue.rate) {
+                return accumulator + 0
+            }
+            return (accumulator + currentValue.rate)
+        }, 0)
+        console.log('sumRating',sumRating)
+        let average = sumRating/newYearArr.length
+        console.log('average',average)
+        RatingsArr.push(
+            {
+                'year': year,
+                'averageRating': average
+            }
+        )
+    })
+
+    RatingsArr.sort((a, b) => b.averageRating - a.averageRating)
+    console.log('RatingsArr',RatingsArr)
+
+    console.log(`The best year was ${RatingsArr[0].year} with an average rate of ${RatingsArr[0].averageRating}`)
+
+
+    return `The best year was ${RatingsArr[0].year} with an average rate of ${RatingsArr[0].averageRating}`
+
+}
+
+bestYearlyRateAvg(themovies)
