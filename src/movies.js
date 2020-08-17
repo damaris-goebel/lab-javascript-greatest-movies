@@ -2988,6 +2988,7 @@ let listOfDirectors = moviesArr.map(movie => movie.director)
 // console.log('listOfDirectors',listOfDirectors)
 let uniqueDirectors = listOfDirectors.filter((item,index) => listOfDirectors.indexOf(item) === index).sort();
 
+return uniqueDirectors
 // console.log('uniqueDirectors',uniqueDirectors)
 
 }
@@ -3159,10 +3160,10 @@ function bestYearAvg (moviesArr) {
 
     if (!moviesArr.length) return null;
     let years = moviesArr.map(movie => movie.year)
-    console.log('years',years)
+    // console.log('years',years)
 
     let uniqueYears = years.filter((item,index) => years.indexOf(item) === index).sort();
-    console.log('uniqueYears',uniqueYears)
+    // console.log('uniqueYears',uniqueYears)
 
     //Summe der Ratings / die Length der Ratings
 
@@ -3170,16 +3171,16 @@ function bestYearAvg (moviesArr) {
 
     uniqueYears.forEach (year => {
         let newYearArr = moviesArr.filter(movie => movie.year === year)
-        console.log('newYearArr',newYearArr)
+        // console.log('newYearArr',newYearArr)
         let sumRating = newYearArr.reduce((accumulator, currentValue) => { 
             if(!currentValue.rate) {
                 return accumulator + 0
             }
             return (accumulator + currentValue.rate)
         }, 0)
-        console.log('sumRating',sumRating)
+        // console.log('sumRating',sumRating)
         let average = sumRating/newYearArr.length
-        console.log('average',average)
+        // console.log('average',average)
         RatingsArr.push(
             {
                 'year': year,
@@ -3189,13 +3190,132 @@ function bestYearAvg (moviesArr) {
     })
 
     RatingsArr.sort((a, b) => b.averageRating - a.averageRating)
-    console.log('RatingsArr',RatingsArr)
+    // console.log('RatingsArr',RatingsArr)
 
-    console.log(`The best year was ${RatingsArr[0].year} with an average rate of ${RatingsArr[0].averageRating}`)
+    // console.log(`The best year was ${RatingsArr[0].year} with an average rate of ${RatingsArr[0].averageRating}`)
 
 
     return `The best year was ${RatingsArr[0].year} with an average rate of ${RatingsArr[0].averageRating}`
 
 }
 
-bestYearlyRateAvg(themovies)
+bestYearAvg(themovies)
+
+// Average rating for each movie genre - how many movies are in each movie genre?
+
+
+function avgRatingGenre (moviesArr) {
+    if (!moviesArr.length) return null;
+    let genre = moviesArr.map(movie => movie.genre)
+    console.log('genre',genre)
+
+    newGenreArr = []
+genre.forEach (genre => {
+    newGenreArr.push (...genre)
+})
+
+console.log('newGenreArr',newGenreArr)
+
+
+let uniqueGenre= newGenreArr.filter((item,index) => newGenreArr.indexOf(item) === index).sort();
+    console.log('uniqueGenre',uniqueGenre)
+
+    let RatingsGenreArr = []
+
+uniqueGenre.forEach (genre => {
+        let newArr = moviesArr.filter(movie => movie.genre.includes(genre))
+        console.log('newArr',newArr)
+
+        let sumRating = newArr.reduce((accumulator, currentValue) => { 
+            if(!currentValue.rate) {
+                return accumulator + 0
+            }
+            return (accumulator + currentValue.rate)
+        }, 0)
+        console.log('sumRating',sumRating)
+        let average = sumRating/newArr.length
+        console.log('average',average)
+        RatingsGenreArr.push(
+            {
+                'genre': genre,
+                'averageRating': average,
+                'moviecount': newArr.length
+            }
+        )
+    })
+
+    RatingsGenreArr.sort((a, b) => b.averageRating - a.averageRating)
+
+// console.log('RatingsGenreArr',RatingsGenreArr)
+}
+
+// avgRatingGenre(themovies) 
+
+// Director with the most movies with a rating over 8.0
+
+function directorWithMostMoviesAndRatingsOver8(moviesArr) {
+
+    let filteredArr = moviesArr.filter(movie => movie.rate >8)
+
+    let uniqueDirectors = gettingUniqueDirectors(filteredArr)
+    console.log('uniqueDirectors',uniqueDirectors)
+
+
+    let directorWithMostMoviesAndRatingsOver8 = []
+    
+    uniqueDirectors.forEach(director => {
+        let newDirArr = filteredArr.filter(movie =>  movie.director === director)
+
+        let count = newDirArr.length
+
+        directorWithMostMoviesAndRatingsOver8.push(
+            {
+                'name': director,
+                'count': count
+            }
+        )    
+
+    })
+    directorWithMostMoviesAndRatingsOver8.sort((a, b) => b.count - a.count)
+
+    // console.log('directorWithMostMoviesAndRatingsOver8',directorWithMostMoviesAndRatingsOver8)
+        
+        
+}
+
+
+
+// directorWithMostMoviesAndRatingsOver8(themovies)
+
+
+// Director with most movies in top 100 (sorted by rating)
+
+function top100MoviesDirector(moviesArr) {
+    let top100Movies = moviesArr.sort((a, b) => b.rate - a.rate).slice(0,100)
+    console.log('top100Movies',top100Movies)
+    console.log('top100Movieslength',top100Movies.length)
+
+    let uniqueDirectors = gettingUniqueDirectors(top100Movies)
+    console.log('uniqueDirectors',uniqueDirectors)
+
+    let directorsWithMostMovies = []
+
+    uniqueDirectors.forEach(director => {
+        let newArr = top100Movies.filter(movie => movie.director === director)
+
+        let count = newArr.length
+
+        directorsWithMostMovies.push(
+            {
+                'name': director,
+                'count': count
+            }
+        )
+    })
+
+    directorsWithMostMovies.sort((a, b) => b.count - a.count)
+    console.log('directorsWithMostMovies',directorsWithMostMovies[0])
+
+}
+
+top100MoviesDirector(themovies)
